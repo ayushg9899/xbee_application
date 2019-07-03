@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    tools:context=".MainActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONNECT"
+        android:id="@+id/buttonStart"
+        android:layout_below="@+id/editText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onClickStart"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DISCONNECT"
+        android:id="@+id/buttonStop"
+        android:layout_below="@+id/editText"
+        android:layout_toRightOf="@+id/buttonStart"
+        android:layout_toEndOf="@+id/buttonStart"
+        android:onClick="onClickStop"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:id="@+id/buttonClear"
+        android:layout_below="@+id/editText"
+        android:layout_toRightOf="@+id/buttonSend"
+        android:layout_toEndOf="@+id/buttonSend"
+        android:onClick="onClickClear"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:id="@+id/buttonSend"
+        android:onClick="onClickSend"
+        android:layout_below="@+id/editText"
+        android:layout_toRightOf="@+id/buttonStop"
+        android:layout_toEndOf="@+id/buttonStop" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAN"
+        android:id="@+id/panconnect"
+        android:layout_below="@+id/buttonStart" />
+    <!--android:onClick="onClickPan"-->
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NI-SCAN"
+        android:id="@+id/scan"
+        android:onClick="onClickscan"
+        android:layout_below="@id/buttonStop"
+        android:layout_toRightOf="@id/panconnect"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <!--<ImageView-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="300dp"-->
+        <!--android:id="@+id/image"-->
+        <!--android:layout_marginHorizontal="80dp"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:layout_below="@+id/buttonStop"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="400dp"-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_below="@+id/panconnect"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignRight="@+id/editText"-->
+        <!--android:layout_alignEnd="@+id/editText"-->
+        <!--android:layout_alignParentBottom="true" />-->
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/panconnect">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+
