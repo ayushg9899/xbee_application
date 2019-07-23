@@ -40,6 +40,8 @@ import com.felhr.utils.ProtocolBuffer;
 
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -85,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
                  i++;
             }
 
-            if(b[2]+0x04==i)
+            if(b[2]+0x04==i)//condition for complete data frames
             {
 
-                if (b[2]==0x15) {
+                if (b[2]==0x15) {//receive pan id
                     //tvAppend(textView, "a\n");
                     for (int j = 0; j < 25; j++) {
                         s = Integer.toHexString(b[j]);
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     b[2]=0x6F;
                 }
 
-                else if(b[2] == 0x05)
+                else if(b[2] == 0x05)//receive ok status on connection
                 {
                     for (int j = 0; j < 9; j++) {
                         s = Integer.toHexString(b[j]);
@@ -114,17 +116,27 @@ public class MainActivity extends AppCompatActivity {
                         b[j] = 0;
 
                 }
+
+                else if(b[2] == 0x10)
+                {
+
+
+
+                }
+
                 else if(b[2] > 0x19)
                 {
-                    //tvAppend(textView, "\nCOR\n");
-                    for (int j = 18; j < i; j++) {
-                        if(b[j]>64&&b[j]<=90||b[j]>=48&&b[j]<58) {
-                            s = Character.toString((char) b[j]);
-                            CharSequence c = s + " ";
-                            //tvAppend(textView, c);
-                        }
-                        if(b[j]==0x00)
+                    for (int j = 5; j < i; j++) {
+//                        if(b[j]>64&&b[j]<=90||b[j]>=48&&b[j]<58) {
+//                            s = Character.toString((char) b[j]);
+//                           nd = nd + s;
+//                        }
+                        if(b[j]==0x00&&(int)b[j+1]==(int)0x13)
+                        {
+                            toast("aaa");
+                            nd_command(b, j);
                             break;
+                        }
                     }
                     for(int j=0;j<b[2]+4;j++)
                         b[j]=0;
@@ -224,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         connect.setEnabled(!bool);
 //        sendButton.setEnabled(bool);
 //        stopButton.setEnabled(bool);
-////        textView.setEnabled(bool);
+//        textView.setEnabled(bool);
 //
     }
 
@@ -236,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
                 device = entry.getValue();
                 int deviceVID = device.getVendorId();
-                if (true)//Arduino Vendor ID
+                if (true)//add Vendor ID for
                 {
                     PendingIntent pi = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
                     usbManager.requestPermission(device, pi);
@@ -255,11 +267,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    Handler handle = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            //toast("");
+            //func();
+        }
+    };
+
     public void onClickPan(int index){
 
         byte[] id  = new byte[16];
         int j=0;
-        byte[] nd = {0x7E, 0x00, 0x04, 0x08, 0x01, 0x4E, 0x44, 0x64};
+       // byte[] nd = {0x7E, 0x00, 0x04, 0x08, 0x01, 0x4E, 0x44, 0x64};
 
         for (j = 0; j < 16; j++) {
             id[j] = (byte) pan[index][j];
@@ -267,15 +287,41 @@ public class MainActivity extends AppCompatActivity {
         serialPort.write(id);//change pan id
 
 
+        //delay of 10s
+        Runnable runnable = new Runnable() {
+            public void run() {
+
+                long endTime = System.currentTimeMillis() + 10*1000;//delay of 10 sec
+
+                while (System.currentTimeMillis() < endTime) {
+                    synchronized (this) {
+                        try {
+                            wait(endTime -
+                                    System.currentTimeMillis());
+                        } catch (Exception e) {}
+                    }
+
+                }
+                handle.sendEmptyMessage(0);
+//                toast("bbb");
+            }
+        };
+        setContentView(R.layout.devices_nd);
+
+        Thread mythread = new Thread(runnable);
+        mythread.start();
+
     }
+
     public void onClickscan(View view){//nd command to get node identifier of all devices on same (same pan id)network
         byte[] nd = {0x7E, 0x00, 0x04, 0x08, 0x01, 0x4E, 0x44, 0x64};
         serialPort.write(nd);
+        //toast("pressed");
     }
 
-    public void func(){
+    public void func(){//function to not show repeated pan ids and create a textview of each
 
-        //toast("sent");
+        toast("sent");
         String panid = new String();
         int arri1, arri2=0,flag_array;
         String[] pan_array = new String[20];
@@ -307,9 +353,9 @@ public class MainActivity extends AppCompatActivity {
                pan_array[arri2] = panid;
                pan_index[arri2] = k;
                arri2++;
+
                TextView tv = new TextView(this);
                tv.setBackgroundResource(R.drawable.text_background);
-
                ll.addView(tv);
                tv.setPadding(20, 20, 30, 30);
                tv.setText("PAN - " + panid );
@@ -327,67 +373,77 @@ public class MainActivity extends AppCompatActivity {
            }
        }
 //        TransitionManager.beginDelayedTransition();
-
-
-
-
     }
 
-//    public void spin()
-//    {
-//        String[] paths = new String[] {"aaa", "bbb", "ccc"} ;
-//        Spinner spinner = new Spinner(this);
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-//                android.R.layout.simple_spinner_item,paths);
-//        ll.addView(spinner);
-//
-////        spinner.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                toast("onclick activated");
-////            }
-////        });
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view,
-//                                       int position, long id) {
-//
-//                switch (position) {
-//                    case 0:
-//                        toast("aaa");
-//                        // Whatever you want to happen when the first item gets selected
-//                        break;
-//                    case 1:
-//                        toast("bbb");
-//                        break;
-//                    case 2:
-//                        toast("ccc");
-//                        break;
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                // Auto-generated method stub
-//            }
-//        });
-//
-//    }
+    public void nd_command(byte[] b, int j)//called from broadcasr receiver to show all node identifier
+    {
+        String ni = new String();
+        String mac = new String();
+        String temp = new String();
+        int k;
+
+        for(k = j;k<j+8;k++)
+        {
+            temp = Integer.toHexString((int)b[k]);
+            if(temp.length()>2)
+                temp = temp.substring(6);
+            else if (temp.length() == 1)
+                temp = "0"+temp;
+
+            mac = mac + temp;
+        }
+        j=k;
+        for(j=j;b[j]!=0x00;j++)
+        {
+            ni = ni + Character.toString((char)(b[j]));
+        }
+
+        toast(mac+"\n"+ni);
+
+        final String finalNI = ni;
+        final String finalMAC = mac;
+        final byte data[] = b;
+
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                ll = (LinearLayout) findViewById(R.id.linearlay);
+                TextView tv = new TextView(MainActivity.this);
+                tv.setBackgroundResource(R.drawable.text_background);
+                ll.addView(tv);
+                tv.setPadding(20, 20, 30, 30);
+                tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                tv.setTextSize(30);
+                tv.setText(finalNI + "\n" + finalMAC);
+
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        try {
+                            storedata(data);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        setContentView(R.layout.display_main);
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void storedata(byte[] data) throws IOException {
+        FileOutputStream fOut = openFileOutput("nd_data",Context.MODE_PRIVATE);
+        fOut.write(data);
+        fOut.close();
+    }
 
 
 
-
-
-
-
-   public void PANconnect(byte[] b) {
+   public void PANconnect(byte[] b) {//redirected from broadcast receiver to copy pan ids and create ID command for each pan id
 
         int add=0;
         int j;
@@ -410,9 +466,9 @@ public class MainActivity extends AppCompatActivity {
         id[15] = (byte)add;
 
 
-        for(j=0;j<16;j++)
+        for(j=0;j<16;j++)//store pan id in pan 2d array
             pan[x][j] = id[j];
-        toast("pan");
+        toast("scanning networks");
         x++;
         y=0;
 
@@ -466,6 +522,8 @@ public class MainActivity extends AppCompatActivity {
 //        sc.setVisibility(View.VISIBLE);
 //        scan_pan.setVisibility(View.GONE);
 
+
+        //delay of 10s
         Runnable runnable = new Runnable() {
             public void run() {
 
@@ -489,7 +547,7 @@ public class MainActivity extends AppCompatActivity {
         Thread mythread = new Thread(runnable);
         mythread.start();
 
-        func();
+        //func();
 
     }
 
