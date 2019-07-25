@@ -1,5 +1,6 @@
 package com.example.xbeeapplication;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,7 +33,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
@@ -112,14 +112,28 @@ public class MainActivity extends AppCompatActivity {
                         CharSequence c = s + " ";
                         //tvAppend(textView, c);
                     }
+                    //toast("select node");
                     for(int j=0;j<9;j++)
                         b[j] = 0;
 
                 }
 
-                else if(b[2] == 0x10)
+                else if(b[2] == 0x0D)
                 {
+                    String temp = new String();
+                    String panid ="";
+                    int flag = 0;
+                    for (int j = 8; j < 16; j++) {
+                        if (b[j] != 0 || flag == 1) {
+                            temp = Integer.toHexString(b[j]);
+                            if (temp.length()==1)
+                                temp = "0"+temp;
+                            flag = 1;
+                            panid += temp;
 
+                        }
+                    }
+                    toast(panid);
 
 
                 }
@@ -143,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
                     //tvAppend(textView, "\n");
 
                 }
-
                 i=0;
             }
 
@@ -213,13 +226,9 @@ public class MainActivity extends AppCompatActivity {
 
         connect = (Button) findViewById(R.id.connect);
         scan_pan = (Button) findViewById(R.id.scan_pan);
-//        TextView textView = ()
 //        sc = (ScrollView) findViewById(R.id.scroll1);
 
 //        image = (ImageView)findViewById(R.id.image);
-
-
-
 
 //        image.setBackgroundResource(R.drawable.ic_vector);
         setUiEnabled(false);
@@ -228,7 +237,6 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(broadcastReceiver, filter);
-
 
     }
 
@@ -267,31 +275,91 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void tempclick(View view) {
+
+//        byte id[] = {0x7E, 0x00, 0x0C, 0x08, 0x01, 0x49, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x55, (byte)0xBF};
+//        serialPort.write(id);;//change pan id
+
+        setContentView(R.layout.display_main);
+        image = (ImageView)findViewById(R.id.image);
+        image.setBackgroundResource(R.drawable.ic_vector);
+
+    }
+
+    public void demosend(View view) {
+
+        EditText ed = (EditText)findViewById(R.id.edit_demo);
+        String s = ed.getText().toString();
+
+        switch (s)
+        {
+            case "1":
+                image.setBackgroundResource(R.drawable.ic_vector1);
+                break;
+            case "2":
+                image.setBackgroundResource(R.drawable.ic_vector2);
+                break;
+            case "3":
+                image.setBackgroundResource(R.drawable.ic_vector3);
+                break;
+            case "4":
+                image.setBackgroundResource(R.drawable.ic_vector4);
+                break;
+            case "5":
+                image.setBackgroundResource(R.drawable.ic_vector5);
+                break;
+            case "6":
+                image.setBackgroundResource(R.drawable.ic_vector6);
+                break;
+            case "7":
+                image.setBackgroundResource(R.drawable.ic_vector7);
+                break;
+            case "8":
+                image.setBackgroundResource(R.drawable.ic_vector8);
+                break;
+            case "9":
+                image.setBackgroundResource(R.drawable.ic_vector9);
+                break;
+
+        }
+
+    }
+
+    public void current_pan(View view) {
+        byte id[] = {0x7E, 0x00, 0x04, 0x08, 0x01, 0x49, 0x44, 0x69};
+        serialPort.write(id);
+    }
+
+    @SuppressLint("HandlerLeak")
     Handler handle = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            //toast("");
-            //func();
+            toast("wait for 5 sec");
+            setContentView(R.layout.devices_nd);
+
         }
     };
 
-    public void onClickPan(int index){
+    public void onClickPan(int index) {
 
-        byte[] id  = new byte[16];
-        int j=0;
-       // byte[] nd = {0x7E, 0x00, 0x04, 0x08, 0x01, 0x4E, 0x44, 0x64};
+      byte[] id  = new byte[16];
+      String temp = new String();
+      int j=0;
+    // byte[] nd = {0x7E, 0x00, 0x04, 0x08, 0x01, 0x4E, 0x44, 0x64};
 
         for (j = 0; j < 16; j++) {
             id[j] = (byte) pan[index][j];
+           // temp = temp + Integer.toHexString(id[j]);
         }
-        serialPort.write(id);//change pan id
+       // toast(temp);
+        serialPort.write(id);;//change pan id
 
 
-        //delay of 10s
+        //delay of 5sec
         Runnable runnable = new Runnable() {
             public void run() {
 
-                long endTime = System.currentTimeMillis() + 10*1000;//delay of 10 sec
+                long endTime = System.currentTimeMillis() + 5*1000;//delay of 5 sec
 
                 while (System.currentTimeMillis() < endTime) {
                     synchronized (this) {
@@ -306,11 +374,10 @@ public class MainActivity extends AppCompatActivity {
 //                toast("bbb");
             }
         };
-        setContentView(R.layout.devices_nd);
+
 
         Thread mythread = new Thread(runnable);
         mythread.start();
-
     }
 
     public void onClickscan(View view){//nd command to get node identifier of all devices on same (same pan id)network
@@ -321,35 +388,39 @@ public class MainActivity extends AppCompatActivity {
 
     public void func(){//function to not show repeated pan ids and create a textview of each
 
-        toast("sent");
+       // toast("sent");
         String panid = new String();
+        String temp = "";
         int arri1, arri2=0,flag_array;
         String[] pan_array = new String[20];
         ll = (LinearLayout) findViewById(R.id.linear1);
 //        TextView tt = (TextView) findViewById(R.id.panid);
 //        tt.setText("changed");
 
-       for(int k=0;k<x;k++) {
+       for(int k=0;k<x;k++) {//to iterate all panids in pan 2d array
            toast(Integer.toString(k));
-           int flag =0;
-           panid = "";
+           int flag =0;// flag to indicate that copying of panid has started
+           panid = "";//string to store panid in string format
            for (int j = 7; j < 15; j++) {
                if (pan[k][j] != 0 || flag == 1) {
-                   panid += Integer.toHexString(pan[k][j]);
+                   temp = Integer.toHexString(pan[k][j]);
+                   if (temp.length()==1)
+                       temp = "0"+temp;
+                   panid += temp;
                    flag = 1;
                }
            }
             flag_array = 0;
-           for(arri1 =0;arri1<arri2;arri1++)
+           for(arri1 =0;arri1<arri2;arri1++)//check for duplicate pan ids
            {
                if(pan_array[arri1].equals(panid))
                {
-                   flag_array =1;
+                   flag_array = 1;
                    break;
                }
 
            }
-           if(flag_array==0) {
+           if(flag_array==0) {//if there is no duplicates
                pan_array[arri2] = panid;
                pan_index[arri2] = k;
                arri2++;
@@ -366,16 +437,29 @@ public class MainActivity extends AppCompatActivity {
                tv.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View view) {
+                       toast(Integer.toString(finalK)+" - command sent");
+                       //y = finalK;
                        onClickPan(finalK);
                        //toast(Integer.toString(finalK));
                    }
                });
+
+//               Button bt = new Button(this);
+//               bt = findViewById(R.id.test_button);
+//               bt.setOnClickListener(new View.OnClickListener() {
+//                   @Override
+//                   public void onClick(View view) {
+//
+//                   }
+//               });
+
            }
        }
-//        TransitionManager.beginDelayedTransition();
+       toast(Integer.toString(arri2));
+       //        TransitionManager.beginDelayedTransition();
     }
 
-    public void nd_command(byte[] b, int j)//called from broadcasr receiver to show all node identifier
+    public void nd_command(byte[] b, int j)//called from broadcast receiver to show all node identifier
     {
         String ni = new String();
         String mac = new String();
@@ -416,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
                 tv.setPadding(20, 20, 30, 30);
                 tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 tv.setTextSize(30);
-                tv.setText(finalNI + "\n" + finalMAC);
+                tv.setText("NI - "+finalNI + "\n" + "MAC - "+finalMAC);
 
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -428,6 +512,8 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         setContentView(R.layout.display_main);
+                        image = (ImageView)findViewById(R.id.image);
+                        image.setBackgroundResource(R.drawable.ic_vector);
 
                     }
                 });
@@ -477,41 +563,13 @@ public class MainActivity extends AppCompatActivity {
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            toast("hahaha");
+            //toast("hahaha");
             func();
         }
     };
 
     public void onClickSend(View view) throws IOException {
-//        String string = editText.getText().toString();
-//        switch (string)
-//        {
-//            case "1":
-//                image.setBackgroundResource(R.drawable.ic_vector);
-//                break;
-//            case "2":
-//                image.setBackgroundResource(R.drawable.ic_vector1);
-//                break;
-//            case "3":
-//                image.setBackgroundResource(R.drawable.ic_vector2);
-//                break;
-//            case "4":
-//                image.setBackgroundResource(R.drawable.ic_vector3);
-//                break;
-//            case "5":
-//                image.setBackgroundResource(R.drawable.ic_vector4);
-//                break;
-//            case "6":
-//                image.setBackgroundResource(R.drawable.ic_vector5);
-//                break;
-//            case "7":
-//                image.setBackgroundResource(R.drawable.ic_vector6);
-//                break;
-//            case "8":
-//                image.setBackgroundResource(R.drawable.ic_vector7);
-//                break;
 //
-//        }
 
         byte frame1[] = {0x7E, 0x00, 0x04, 0x08, 0x01, 0x41, 0x53, 0x62};//frame for active scan command
         x=0;
@@ -546,8 +604,6 @@ public class MainActivity extends AppCompatActivity {
 
         Thread mythread = new Thread(runnable);
         mythread.start();
-
-        //func();
 
     }
 

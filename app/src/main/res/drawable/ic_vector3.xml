@@ -5,25 +5,19 @@
     android:viewportHeight="24">
   <path
       android:strokeWidth="1"
-      android:pathData="M2,4L4,4L4,20L20,20L20,4L22,4"
+      android:pathData="M 2 3 L 2 23 L 22 23 L 22 3 L 8 3 L 8 1 L 9 1 L 5 1 L 6 1 L 6 3 L 2 3 Z"
       android:fillColor="#000000"
       android:fillAlpha="0"
       android:strokeColor="#000000"/>
-  <!--<path-->
-      <!--android:pathData="M4,20L20,20L20,18L4,18Z"-->
-      <!--android:fillColor="#0000ff"/>-->
-  <!--<path-->
-      <!--android:pathData="M4,20L20,20L20,16L4,16Z"-->
-      <!--android:fillColor="#0000ff"/>-->
+  <path
+      android:pathData="M3,22L21,22L21,17L3,17Z"
+      android:fillColor="#0000ff"/>
   <path
       android:strokeWidth="1"
-      android:pathData="M5,14L5,19L19,19L19,14"
+      android:pathData="M3,17L3,22L21,22L21,17"
       android:fillColor="#00000000"
       android:fillAlpha="0"
       android:strokeColor="#0000ff"/>
-  <path
-      android:pathData="M5,19L19,19L19,14L5,14Z"
-      android:fillColor="#0000ff"/>
   <!--<path-->
       <!--android:pathData="M4,20L20,20L20,12L4,12Z"-->
       <!--android:fillColor="#0000ff"/>-->

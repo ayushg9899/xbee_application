@@ -5,10 +5,13 @@
     android:viewportHeight="24">
   <path
       android:strokeWidth="1"
-      android:pathData="M2,4L4,4L4,20L20,20L20,4L22,4"
+      android:pathData="M 2 3 L 2 23 L 22 23 L 22 3 L 8 3 L 8 1 L 9 1 L 5 1 L 6 1 L 6 3 L 2 3 Z"
       android:fillColor="#000000"
       android:fillAlpha="0"
       android:strokeColor="#000000"/>
+
+
+  <!--M 2 5 H 4 Z M 22 5 H 20 Z M2 21 H 6 Z M 22 21 H 18 Z-->
 
   <!--<path-->
       <!--android:pathData="M4,20L20,20L20,18L4,18Z"-->
