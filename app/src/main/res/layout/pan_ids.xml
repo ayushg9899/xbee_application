@@ -10,17 +10,45 @@
         android:orientation="vertical"
         android:id="@+id/linear1">
 
-        <TextView
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PAN IDs "
-            android:id="@+id/panid"
-            android:textSize="30dp"
-            android:padding="40dp"/>
+            android:paddingVertical="40dp">
 
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="PAN IDs "-->
+            <!--android:id="@+id/panid"-->
+            <!--android:textSize="30dp"/>-->
+
+            <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:id="@+id/panid_scan"
+            android:background="@drawable/text_background"
+            android:text="RESCAN"
+            android:layout_marginLeft="20dp"
+            android:textSize="25dp"
+            android:onClick="onClickSend"
+            />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:background="@drawable/text_background"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="25dp"
+                android:layout_toEndOf="@id/panid_scan"
+                android:onClick="current_pan"
+                android:id="@+id/current_pan"
+                android:layout_marginStart="10dp"
+                android:text="current PAN"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
-
-
 
 </ScrollView>
