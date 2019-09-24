@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#801166E6"
+    android:background="#83381B"
     android:padding="10dp"
     android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rel_layout">
 
     <Button
         android:layout_width="wrap_content"
@@ -27,23 +32,36 @@
         android:layout_marginStart="10dp"
         android:text="current PAN ID"
         android:layout_marginTop="50dp"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/text_background"
-        android:paddingHorizontal="10dp"
-        android:text="NEXT"
-        android:onClick="tempclick"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/current_pan"/>
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/text_background"-->
+        <!--android:paddingHorizontal="10dp"-->
+        <!--android:text="NEXT"-->
+        <!--android:onClick="tempclick"-->
+        <!--android:layout_marginTop="50dp"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:layout_toEndOf="@id/current_pan"/>-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_background"
+            android:layout_below="@id/node_button"
+            android:layout_marginTop="10dp"
+            android:text="RESCAN"
+            android:onClick="onClickSend"/>
+
+
+
+    </RelativeLayout>
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/node_button">
+        android:layout_below="@id/rel_layout">
 
         <LinearLayout
             android:layout_width="wrap_content"

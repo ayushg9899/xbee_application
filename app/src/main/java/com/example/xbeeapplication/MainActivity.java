@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(b[2] == 0x10)
                 {
+                    toast("data received");
                     byte rec_data[] = {b[17], b[18]};
                     send_data(rec_data);
 
@@ -338,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                 tv.setText("PAN - " + panid );
                 tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 tv.setTextSize(30);
-
+                tv.setTextColor(Color.parseColor("#83381B"));
                 final int finalK = k;
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -446,6 +448,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 //----------------------------code for devices_nd layout starts------------------------//
+
+
+    public void default_pan(View view){
+
+        byte[] id = {0x7E, 0x00, 0x0C, 0x08, 0x01, 0x49, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x68};
+        serialPort.write(id);
+
+    }
 
 
 
@@ -556,26 +566,27 @@ public class MainActivity extends AppCompatActivity {
         image = (ImageView)findViewById(R.id.image);
         image.setBackgroundResource(R.drawable.ic_vector);
 
-        TextView tv = (TextView)findViewById(R.id.text_data);
-        byte[] b = readSavedData().getBytes();
-        String string = new String();
-        String temp = "";
-        for(int k =0;k<b.length;k++) {
-            temp = Integer.toHexString((int)b[k]);
-            if(temp.length()>2)
-                temp = temp.substring(6);
-            else if (temp.length() == 1)
-                temp = "0"+temp;
-
-            string = string + temp + " ";
-        }
-
-        tv.setText(string);
+//        TextView tv = (TextView)findViewById(R.id.text_data);
+//        byte[] b = readSavedData().getBytes();
+//        String string = new String();
+//        String temp = "";
+//        for(int k =0;k<b.length;k++) {
+//            temp = Integer.toHexString((int)b[k]);
+//            if(temp.length()>2)
+//                temp = temp.substring(6);
+//            else if (temp.length() == 1)
+//                temp = "0"+temp;
+//
+//            string = string + temp + " ";
+//        }
+//
+//        tv.setText(string);
 
     }
     
     public void send_data(byte[] data){//not tested
-        
+
+        toast("function reached");
         int x = data[0]<<8 + data[1];
             if(x<100)
                 image.setBackgroundResource(R.drawable.ic_vector1);

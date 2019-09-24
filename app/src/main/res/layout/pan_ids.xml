@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#801166E6"
+    android:background="#83381B"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -46,6 +46,19 @@
                 android:id="@+id/current_pan"
                 android:layout_marginStart="10dp"
                 android:text="current PAN"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="default_pan"
+                android:id="@+id/default_pan"
+                android:text="DEFAULT PAN"
+                android:background="@drawable/text_background"
+                android:layout_below="@id/panid_scan"
+                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:textSize="25dp"/>
 
         </RelativeLayout>
 

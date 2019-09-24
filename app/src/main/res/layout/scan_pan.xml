@@ -2,21 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#801166E6">
+    android:background="#83381B">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/scan_pan"
-        android:textSize="20dp"
+        android:textColor="#E4B61F"
+        android:textSize="25dp"
         android:text="Click Scan to scan all pan ids."
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="4dp"
         android:layout_centerHorizontal="true"/>
 
     <Button
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:background="#801166E6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:textSize="30dp"
+        android:background="@drawable/text_background"
         android:id="@+id/scan_pan"
         android:text="SCAN PAN IDs"
         android:onClick="onClickSend"
