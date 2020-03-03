@@ -29,7 +29,9 @@ Various steps involved in establishing connection with xbee module to read and w
 The  github.felHR85.UsbSerial library library provide many features and options to user which you can find on its github page.
 
 To know more about these libraries, refer the below links.
+
 Link: https://developer.android.com/guide/topics/connectivity/usb?hl=en
+
 Link: https://github.com/felHR85/UsbSerial
 
 # Layout and Code
