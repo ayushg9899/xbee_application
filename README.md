@@ -1,7 +1,7 @@
 # xbee_application
 ANDROID APPLICATION TO RECEIVE AND TRANSMIT DATA THROUGH XBEE MODULE.
 
-#INTRODUCTION
+# INTRODUCTION
 
 The android application is made to connect an Android device to Xbee module and transmit given data through Xbee series 2 router module to coordinator module. The smatphone is connected to a coordinator module which receives and transmits data to other xbee (router) modules.
 The app contains a simple GUI which provide step by step instruction to establish  connection to the module. The basic layout of application include :-
@@ -13,13 +13,13 @@ The app contains a simple GUI which provide step by step instruction to establis
 The app is made on Android Studio IDE using JAVA language. The minimum SDK version is set as 26 but it can be changed from build.gradle file.
 
 
-#PREREQUISITES
+# PREREQUISITES
 One requires an android smartphone, an OTG cable and at least two xbee module to establish a connection between them and transfer data.
 The xbee devices need to be set on same network.
 You can use XCTU application to modify your xbee settings (This software is available for windows, linux and macOS).
 
 
-#LIBRARIES USED
+# LIBRARIES USED
 
 The two most important libraries used are android.hardware.usb library and github.felHR85.UsbSerial library. The former library is used to give android device the permission to connect to an USB Peripheral device while the latter one is used for serial communication between android device and connected USB peripheral device.
 Various steps involved in establishing connection with xbee module to read and write data for communication with other xbee modules are:
@@ -32,14 +32,14 @@ To know more about these libraries, refer the below links.
 Link: https://developer.android.com/guide/topics/connectivity/usb?hl=en
 Link: https://github.com/felHR85/UsbSerial
 
-#Layout and Code
+# Layout and Code
 
 The GUI contains different layout for different tasks which are switched dynamically in java code.A single java file is used instead of creating different activity for all the layouts.
 The first layout has a connect button to establish a connection between android device and xbee module. The 2nd layout has a single button to scan all the nearby devices and get their PAN IDs. The 3rd layout displays all the PAN IDs of devices present nearby. The user selects one of the displayed PAN IDs to change the connected xbee module’s PAN ID to selected PAN ID and so on.
 The JAVA code has different functions for all the layouts. It also has an onreceive function to read data from the peripheral device. This feature was initially added to receive data from arduino but can be used with xbee modules too. Number of functions are made for different purposes and to keep the code clean.
 
 
-#TRANSMISSION OF DATA
+# TRANSMISSION OF DATA
 
 One cannot send data to xbee and expect to receive it on coordinator end normally. Data is transmitted through xbee in frames. 
  Reading data
